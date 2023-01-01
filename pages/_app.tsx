@@ -1,11 +1,15 @@
 import { AppProps } from "next/app";
 import React from "react";
-import { StyleProvider, ThemePicker } from "vcc-ui";
+import { StyleProvider, StyleRenderer, ThemePicker } from "vcc-ui";
 
-function App({ Component, pageProps }: AppProps) {
+interface CustomAppProps extends AppProps {
+  renderer: StyleRenderer;
+}
+
+function App({ Component, pageProps, renderer }: CustomAppProps) {
   return (
     <React.StrictMode>
-      <StyleProvider>
+      <StyleProvider renderer={renderer}>
         <ThemePicker variant="light">
           <Component {...pageProps} />
         </ThemePicker>
