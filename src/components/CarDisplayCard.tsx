@@ -13,7 +13,7 @@ interface Props {
 export function CarDisplayCard({ car, priority = false }: Props) {
   const theme = useTheme();
 
-  const { imageUrl, learnUrl, shopUrl } = createUrls(car.id);
+  const { learnUrl, shopUrl } = createUrls(car.id);
 
   return (
     <View as="li" extend={{ width: 300, scrollSnapAlign: "start" }}>
@@ -52,7 +52,7 @@ export function CarDisplayCard({ car, priority = false }: Props) {
        varied in size we would have to rely on the object-fit CSS-property to
        avoid image stretching and layout shift simultaneously. */}
       <Image
-        src={imageUrl}
+        src={car.imageUrl}
         alt={`${car.modelName} viewed from the side, with the front of the car pointing to the left`}
         width={DISPLAY_CARD_WIDTH}
         height={(DISPLAY_CARD_WIDTH / 4) * 3}
