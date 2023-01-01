@@ -54,7 +54,7 @@ export function useScrollContainer(ref: MutableRefObject<HTMLElement | null>) {
     // Measure once on page load, then rely on scroll and resize events
     onChange(_element);
 
-    function onScrollChange(event: Event) {
+    function onChangeEvent(event: Event) {
       const element = event.currentTarget as Element;
       onChange(element);
     }
@@ -63,11 +63,18 @@ export function useScrollContainer(ref: MutableRefObject<HTMLElement | null>) {
       onChange(entries[0].target),
     );
 
-    _element.addEventListener("scroll", onScrollChange);
+    _element.addEventListener("scroll", onChangeEvent);
+
+    // For some reason the ResizeObserver does not fire when the body type
+    // filter changes, even though the size of the scroll container changes.
+    // Listening for DOM node insertions fills that gap.
+    _element.addEventListener("DOMNodeInserted", onChangeEvent);
+
     resizeObserver.observe(_element);
 
     return () => {
-      _element.removeEventListener("scroll", onScrollChange);
+      _element.removeEventListener("scroll", onChangeEvent);
+      _element.removeEventListener("DOMNodeInserted", onChangeEvent);
       resizeObserver.unobserve(_element);
     };
   }, [ref]);
@@ -80,6 +87,10 @@ export function useScrollContainer(ref: MutableRefObject<HTMLElement | null>) {
     if (ref.current) scrollToNewCards(ref.current);
   }
 
+  function resetScroll() {
+    if (ref.current) ref.current.scrollTo({ left: 0, behavior: "smooth" });
+  }
+
   return {
     moveLeft,
     moveRight,
@@ -87,6 +98,7 @@ export function useScrollContainer(ref: MutableRefObject<HTMLElement | null>) {
     backwardsEnabled,
     progress,
     pages,
+    resetScroll,
   };
 }
 

@@ -2,20 +2,24 @@ import {
   type GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from "next";
-import { useRef } from "react";
-import { Block, Flex, IconButton, useTheme } from "vcc-ui";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
+import { Block, Flex, IconButton, SelectInput, useTheme } from "vcc-ui";
+import { z } from "zod";
 import carsJsonData from "../public/api/cars.json";
 import { CarDisplayCard } from "../src/components/CarDisplayCard";
 import { PageIndicator } from "../src/components/PageIndicator";
 import { useScrollContainer } from "../src/hooks/useScrollContainer";
-import { carSchema } from "../src/schemas";
+import { bodyTypeSchema, carSchema } from "../src/schemas";
 
-export default function HomePage({ cars }: Props) {
+export default function HomePage({ cars, bodyTypeFilter }: Props) {
   const theme = useTheme();
+  const router = useRouter();
 
   const listRef = useRef<HTMLUListElement | null>(null);
 
   const {
+    resetScroll,
     moveLeft,
     moveRight,
     forwardsEnabled,
@@ -24,8 +28,29 @@ export default function HomePage({ cars }: Props) {
     progress,
   } = useScrollContainer(listRef);
 
+  useEffect(() => {
+    // Reset the scroll back to the first car when the filter changes
+    resetScroll();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bodyTypeFilter]);
+
   return (
     <>
+      <SelectInput
+        label="Filter by type"
+        value={bodyTypeFilter}
+        onChange={(e) => {
+          const value = e.target.value;
+          router.push(value ? `/?bodyType=${value}` : "/");
+        }}
+        allowEmpty
+      >
+        <option value="suv">SUV</option>
+        <option value="estate">Estate</option>
+        <option value="sedan">Sedan</option>
+      </SelectInput>
+
       <Flex
         ref={listRef}
         as="ul" // Render as "ul" for better a11y
@@ -107,12 +132,20 @@ export default function HomePage({ cars }: Props) {
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
+const queryParamsSchema = z.object({
+  bodyType: bodyTypeSchema.optional(),
+});
+
 export function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const cars = carSchema.parse(carsJsonData);
+  const cars = z.array(carSchema).parse(carsJsonData);
+  const bodyTypeFilter = queryParamsSchema.parse(ctx.query).bodyType;
+
+  if (!bodyTypeFilter) return { props: { cars } };
 
   return {
     props: {
-      cars,
+      cars: cars.filter((car) => car.bodyType === bodyTypeFilter),
+      bodyTypeFilter,
     },
   };
 }
