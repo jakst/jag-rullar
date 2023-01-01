@@ -1,5 +1,5 @@
 import { AppProps } from "next/app";
-import React from "react";
+import { StrictMode } from "react";
 import { StyleProvider, StyleRenderer, ThemePicker } from "vcc-ui";
 
 interface CustomAppProps extends AppProps {
@@ -8,13 +8,13 @@ interface CustomAppProps extends AppProps {
 
 function App({ Component, pageProps, renderer }: CustomAppProps) {
   return (
-    <React.StrictMode>
+    <StrictMode>
       <StyleProvider renderer={renderer}>
         <ThemePicker variant="light">
           <Component {...pageProps} />
         </ThemePicker>
       </StyleProvider>
-    </React.StrictMode>
+    </StrictMode>
   );
 }
 
