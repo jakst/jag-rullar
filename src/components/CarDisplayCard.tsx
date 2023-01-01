@@ -15,7 +15,7 @@ export function CarDisplayCard({ car, priority = false }: Props) {
   const { imageUrl, learnUrl, shopUrl } = createUrls(car.id);
 
   return (
-    <View extend={{ width: 300 }}>
+    <View as="li" extend={{ width: 300 }}>
       <Text
         variant="columbus"
         subStyle="emphasis"

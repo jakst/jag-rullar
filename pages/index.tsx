@@ -12,7 +12,17 @@ export default function HomePage({ cars }: Props) {
 
   return (
     <>
-      <Flex extend={{ flexDirection: "row", gap: theme.baselineGrid * 2 }}>
+      <Flex
+        as="ul" // Render as "ul" for better a11y
+        extend={{
+          flexDirection: "row",
+          gap: theme.baselineGrid * 2,
+
+          // Reset margin/padding added by browser for "ul"
+          margin: 0,
+          padding: 0,
+        }}
+      >
         {cars.map((car, index) => (
           <CarDisplayCard
             key={car.id}
