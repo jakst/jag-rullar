@@ -34,8 +34,12 @@ export function CarDisplayCard({ car, priority = false }: Props) {
         {car.modelName}{" "}
         <Text
           variant="columbus"
-          // Same as for the body type above
-          extend={{ color: theme.color.foreground.secondary }}
+          extend={{
+            // Same as for the body type above
+            color: theme.color.foreground.secondary,
+            display: "block",
+            fromM: { display: "inline" },
+          }}
         >
           {car.modelType}
         </Text>

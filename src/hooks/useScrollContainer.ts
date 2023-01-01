@@ -5,8 +5,26 @@ export function useScrollContainer(ref: MutableRefObject<HTMLElement | null>) {
   const [forwardsEnabled, setForwardsEnabled] = useState(false);
   const [backwardsEnabled, setBackwardsEnabled] = useState(false);
 
+  // Unfortunately, we cannot know the total number of pages until we have
+  // measured the scroll container width. Defaulting to 1 will hide the page
+  // indicator until a value has been calculated. Having the element reveal
+  // itself right after the rest of the content should be a less jarring
+  // experience than changing the amount of indicators between first and
+  // second render.
+  const [pages, setPages] = useState(1);
+  const [progress, setProgress] = useState(1);
+
   function onChange(element: Element) {
     const maxScroll = element.scrollWidth - element.clientWidth;
+
+    const pages = Math.ceil(element.scrollWidth / element.clientWidth);
+    setPages(pages);
+
+    if (maxScroll > 0) {
+      const percentScrolled = element.scrollLeft / maxScroll;
+      const currentPage = Math.round((pages - 1) * percentScrolled + 1);
+      setProgress(currentPage);
+    }
 
     if (element.clientWidth === element.scrollWidth) {
       // Scroll container is the same width as the content
@@ -62,7 +80,14 @@ export function useScrollContainer(ref: MutableRefObject<HTMLElement | null>) {
     if (ref.current) scrollToNewCards(ref.current);
   }
 
-  return { moveLeft, moveRight, forwardsEnabled, backwardsEnabled };
+  return {
+    moveLeft,
+    moveRight,
+    forwardsEnabled,
+    backwardsEnabled,
+    progress,
+    pages,
+  };
 }
 
 /**

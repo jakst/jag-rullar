@@ -3,9 +3,10 @@ import {
   type InferGetServerSidePropsType,
 } from "next";
 import { useRef } from "react";
-import { Flex, IconButton, useTheme } from "vcc-ui";
+import { Block, Flex, IconButton, useTheme } from "vcc-ui";
 import carsJsonData from "../public/api/cars.json";
 import { CarDisplayCard } from "../src/components/CarDisplayCard";
+import { PageIndicator } from "../src/components/PageIndicator";
 import { useScrollContainer } from "../src/hooks/useScrollContainer";
 import { type Car } from "../src/types";
 
@@ -14,8 +15,14 @@ export default function HomePage({ cars }: Props) {
 
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  const { moveLeft, moveRight, forwardsEnabled, backwardsEnabled } =
-    useScrollContainer(listRef);
+  const {
+    moveLeft,
+    moveRight,
+    forwardsEnabled,
+    backwardsEnabled,
+    pages,
+    progress,
+  } = useScrollContainer(listRef);
 
   return (
     <>
@@ -46,12 +53,37 @@ export default function HomePage({ cars }: Props) {
         ))}
       </Flex>
 
-      <Flex
+      {pages > 1 && (
+        <Block
+          extend={{
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: theme.baselineGrid,
+            marginTop: theme.baselineGrid * 2,
+
+            display: "flex",
+            fromM: {
+              display: "none",
+            },
+          }}
+        >
+          {Array.from(new Array(pages)).map((_, index) => (
+            <PageIndicator key={index} active={index + 1 === progress} />
+          ))}
+        </Block>
+      )}
+
+      <Block
         extend={{
           flexDirection: "row",
           justifyContent: "flex-end",
           gap: theme.baselineGrid,
           padding: theme.baselineGrid * 2,
+
+          display: "none",
+          fromM: {
+            display: "flex",
+          },
         }}
       >
         <IconButton
@@ -68,7 +100,7 @@ export default function HomePage({ cars }: Props) {
           disabled={!forwardsEnabled}
           onClick={moveRight}
         />
-      </Flex>
+      </Block>
     </>
   );
 }
