@@ -6,9 +6,10 @@ import { A } from "./A";
 
 interface Props {
   car: Car;
+  priority?: boolean;
 }
 
-export function CarDisplayCard({ car }: Props) {
+export function CarDisplayCard({ car, priority = false }: Props) {
   const theme = useTheme();
 
   const { imageUrl, learnUrl, shopUrl } = createUrls(car.id);
@@ -50,6 +51,7 @@ export function CarDisplayCard({ car }: Props) {
         alt={`${car.modelName} viewed from the side, with the front of the car pointing to the left`}
         width={300}
         height={225}
+        priority={priority}
       />
 
       <Flex

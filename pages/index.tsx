@@ -13,8 +13,12 @@ export default function HomePage({ cars }: Props) {
   return (
     <>
       <Flex extend={{ flexDirection: "row", gap: theme.baselineGrid * 2 }}>
-        {cars.map((car) => (
-          <CarDisplayCard key={car.id} car={car} />
+        {cars.map((car, index) => (
+          <CarDisplayCard
+            key={car.id}
+            car={car}
+            priority={index <= 3} // Preload the first 4 images
+          />
         ))}
       </Flex>
     </>
