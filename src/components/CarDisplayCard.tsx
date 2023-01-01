@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Flex, Spacer, Text, useTheme, View } from "vcc-ui";
 import { DISPLAY_CARD_WIDTH } from "../constants";
-import { type Car } from "../types";
+import { type Car } from "../schemas";
 import { createUrls } from "../utils";
 import { A } from "./A";
 

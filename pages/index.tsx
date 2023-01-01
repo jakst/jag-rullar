@@ -8,7 +8,7 @@ import carsJsonData from "../public/api/cars.json";
 import { CarDisplayCard } from "../src/components/CarDisplayCard";
 import { PageIndicator } from "../src/components/PageIndicator";
 import { useScrollContainer } from "../src/hooks/useScrollContainer";
-import { type Car } from "../src/types";
+import { carSchema } from "../src/schemas";
 
 export default function HomePage({ cars }: Props) {
   const theme = useTheme();
@@ -108,9 +108,11 @@ export default function HomePage({ cars }: Props) {
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const cars = carSchema.parse(carsJsonData);
+
   return {
     props: {
-      cars: carsJsonData as Car[],
+      cars,
     },
   };
 }
