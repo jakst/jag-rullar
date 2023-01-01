@@ -1,6 +1,8 @@
 import Image from "next/image";
-import { Spacer, Text, useTheme, View } from "vcc-ui";
+import { Flex, Spacer, Text, useTheme, View } from "vcc-ui";
 import { type Car } from "../types";
+import { createUrls } from "../utils";
+import { A } from "./A";
 
 interface Props {
   car: Car;
@@ -8,6 +10,8 @@ interface Props {
 
 export function CarDisplayCard({ car }: Props) {
   const theme = useTheme();
+
+  const { imageUrl, learnUrl, shopUrl } = createUrls(car.id);
 
   return (
     <View extend={{ width: 300 }}>
@@ -42,15 +46,23 @@ export function CarDisplayCard({ car }: Props) {
        If these images varied in size we would have to rely on the object-fit CSS-
        property to avoid image stretching and layout shift simultaneously. */}
       <Image
-        src={createImageUrl(car.id)}
+        src={imageUrl}
         alt={`${car.modelName} viewed from the side, with the front of the car pointing to the left`}
         width={300}
         height={225}
       />
+
+      <Flex
+        extend={{
+          flexDirection: "row",
+          justifyContent: "center",
+          gap: theme.baselineGrid * 3,
+          textTransform: "uppercase",
+        }}
+      >
+        <A href={learnUrl}>Learn</A>
+        <A href={shopUrl}>Shop</A>
+      </Flex>
     </View>
   );
-}
-
-function createImageUrl(carId: string) {
-  return `/images/${carId.replaceAll("-", "_")}.jpg`;
 }
