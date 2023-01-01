@@ -17,6 +17,8 @@ export default function HomePage({ cars }: Props) {
         extend={{
           flexDirection: "row",
           gap: theme.baselineGrid * 2,
+          width: "100%",
+          overflowX: "scroll",
 
           // Reset margin/padding added by browser for "ul"
           margin: 0,
