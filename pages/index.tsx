@@ -14,7 +14,8 @@ export default function HomePage({ cars }: Props) {
 
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  const { scrollStatus, moveLeft, moveRight } = useScrollContainer(listRef);
+  const { moveLeft, moveRight, forwardsEnabled, backwardsEnabled } =
+    useScrollContainer(listRef);
 
   return (
     <>
@@ -57,14 +58,14 @@ export default function HomePage({ cars }: Props) {
           aria-label="Show previous page with cars"
           iconName="navigation-chevronback"
           variant="outline"
-          disabled={scrollStatus === "forward"}
+          disabled={!backwardsEnabled}
           onClick={moveLeft}
         />
         <IconButton
           aria-label="Show next page with cars"
           iconName="navigation-chevronforward"
           variant="outline"
-          disabled={scrollStatus === "backward"}
+          disabled={!forwardsEnabled}
           onClick={moveRight}
         />
       </Flex>
