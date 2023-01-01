@@ -2,7 +2,7 @@ import {
   type GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from "next";
-import { Flex, useTheme } from "vcc-ui";
+import { Flex, IconButton, useTheme } from "vcc-ui";
 import carsJsonData from "../public/api/cars.json";
 import { CarDisplayCard } from "../src/components/CarDisplayCard";
 import { type Car } from "../src/types";
@@ -32,6 +32,28 @@ export default function HomePage({ cars }: Props) {
             priority={index <= 3} // Preload the first 4 images
           />
         ))}
+      </Flex>
+
+      <Flex
+        extend={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          gap: theme.baselineGrid,
+          padding: theme.baselineGrid * 2,
+        }}
+      >
+        <IconButton
+          aria-label="Show previous page with cars"
+          iconName="navigation-chevronback"
+          variant="outline"
+          onClick={() => {}}
+        />
+        <IconButton
+          aria-label="Show next page with cars"
+          iconName="navigation-chevronforward"
+          variant="outline"
+          onClick={() => {}}
+        />
       </Flex>
     </>
   );
