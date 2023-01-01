@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Text, useTheme, View } from "vcc-ui";
+import { Spacer, Text, useTheme, View } from "vcc-ui";
 import { type Car } from "../types";
 
 interface Props {
@@ -34,6 +34,8 @@ export function CarDisplayCard({ car }: Props) {
           {car.modelType}
         </Text>
       </Text>
+
+      <Spacer size={2} />
 
       {/*
        w300/h225 matches the w800/h600 dimensions of the image files used here.
