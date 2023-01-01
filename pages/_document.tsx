@@ -1,3 +1,4 @@
+import { FavIcons } from "@volvo-cars/favicons/react";
 import Document, {
   Head,
   Html,
@@ -32,7 +33,10 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <FavIcons />
+        </Head>
+
         <body>
           <Main />
           <NextScript />

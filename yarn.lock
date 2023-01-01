@@ -930,6 +930,11 @@
     "@typescript-eslint/types" "5.47.1"
     eslint-visitor-keys "^3.3.0"
 
+"@volvo-cars/favicons@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@volvo-cars/favicons/-/favicons-4.2.0.tgz#a92e0d7d21cbcb4b70da1d6c76066772baf560dd"
+  integrity sha512-lkIkNwRYbQSuLBp4IJJx1l+l7wg+mFeN9PenmVFCxEmz5C1sfONUc4W3PMwJnu18b49azPRefsRpj5GSLD3JoQ==
+
 "@volvo-cars/react-aria@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@volvo-cars/react-aria/-/react-aria-0.3.0.tgz#cd27cd36cab62ebef78b8bae77caf0b8dbcea885"
