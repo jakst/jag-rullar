@@ -2,6 +2,7 @@ import {
   type GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from "next";
+import { useRef } from "react";
 import { Flex, IconButton, useTheme } from "vcc-ui";
 import carsJsonData from "../public/api/cars.json";
 import { CarDisplayCard } from "../src/components/CarDisplayCard";
@@ -10,9 +11,12 @@ import { type Car } from "../src/types";
 export default function HomePage({ cars }: Props) {
   const theme = useTheme();
 
+  const listRef = useRef<HTMLUListElement | null>(null);
+
   return (
     <>
       <Flex
+        ref={listRef}
         as="ul" // Render as "ul" for better a11y
         extend={{
           flexDirection: "row",
@@ -46,13 +50,17 @@ export default function HomePage({ cars }: Props) {
           aria-label="Show previous page with cars"
           iconName="navigation-chevronback"
           variant="outline"
-          onClick={() => {}}
+          onClick={() => {
+            listRef.current?.scrollBy({ left: -100 });
+          }}
         />
         <IconButton
           aria-label="Show next page with cars"
           iconName="navigation-chevronforward"
           variant="outline"
-          onClick={() => {}}
+          onClick={() => {
+            listRef.current?.scrollBy({ left: 100 });
+          }}
         />
       </Flex>
     </>

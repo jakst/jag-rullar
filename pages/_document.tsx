@@ -14,6 +14,14 @@ export default class MyDocument extends Document {
     const renderer = styleRenderer();
     const originalRenderPage = ctx.renderPage;
 
+    renderer.renderStatic(
+      {
+        margin: 0,
+        padding: 0,
+      },
+      "body",
+    );
+
     ctx.renderPage = () =>
       originalRenderPage({
         // eslint-disable-next-line react/display-name
