@@ -6,12 +6,15 @@ import { useRef } from "react";
 import { Flex, IconButton, useTheme } from "vcc-ui";
 import carsJsonData from "../public/api/cars.json";
 import { CarDisplayCard } from "../src/components/CarDisplayCard";
+import { useScrollContainer } from "../src/hooks/useScrollContainer";
 import { type Car } from "../src/types";
 
 export default function HomePage({ cars }: Props) {
   const theme = useTheme();
 
   const listRef = useRef<HTMLUListElement | null>(null);
+
+  const { scrollStatus, moveLeft, moveRight } = useScrollContainer(listRef);
 
   return (
     <>
@@ -23,10 +26,14 @@ export default function HomePage({ cars }: Props) {
           gap: theme.baselineGrid * 2,
           width: "100%",
           overflowX: "scroll",
+          boxSizing: "border-box",
+          paddingInline: theme.baselineGrid * 2,
+          scrollSnapType: "x mandatory",
+          scrollPadding: theme.baselineGrid * 2,
 
           // Reset margin/padding added by browser for "ul"
           margin: 0,
-          padding: 0,
+          paddingBlock: 0,
         }}
       >
         {cars.map((car, index) => (
@@ -50,17 +57,15 @@ export default function HomePage({ cars }: Props) {
           aria-label="Show previous page with cars"
           iconName="navigation-chevronback"
           variant="outline"
-          onClick={() => {
-            listRef.current?.scrollBy({ left: -100 });
-          }}
+          disabled={scrollStatus === "forward"}
+          onClick={moveLeft}
         />
         <IconButton
           aria-label="Show next page with cars"
           iconName="navigation-chevronforward"
           variant="outline"
-          onClick={() => {
-            listRef.current?.scrollBy({ left: 100 });
-          }}
+          disabled={scrollStatus === "backward"}
+          onClick={moveRight}
         />
       </Flex>
     </>

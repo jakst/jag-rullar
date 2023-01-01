@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Flex, Spacer, Text, useTheme, View } from "vcc-ui";
+import { DISPLAY_CARD_WIDTH } from "../constants";
 import { type Car } from "../types";
 import { createUrls } from "../utils";
 import { A } from "./A";
@@ -15,7 +16,7 @@ export function CarDisplayCard({ car, priority = false }: Props) {
   const { imageUrl, learnUrl, shopUrl } = createUrls(car.id);
 
   return (
-    <View as="li" extend={{ width: 300 }}>
+    <View as="li" extend={{ width: 300, scrollSnapAlign: "start" }}>
       <Text
         variant="columbus"
         subStyle="emphasis"
@@ -43,14 +44,14 @@ export function CarDisplayCard({ car, priority = false }: Props) {
       <Spacer size={2} />
 
       {/*
-       w300/h225 matches the w800/h600 dimensions of the image files used here.
-       If these images varied in size we would have to rely on the object-fit CSS-
-       property to avoid image stretching and layout shift simultaneously. */}
+       The image files have the dimensions w800/h600, i.e. 4/3. If these images
+       varied in size we would have to rely on the object-fit CSS-property to
+       avoid image stretching and layout shift simultaneously. */}
       <Image
         src={imageUrl}
         alt={`${car.modelName} viewed from the side, with the front of the car pointing to the left`}
-        width={300}
-        height={225}
+        width={DISPLAY_CARD_WIDTH}
+        height={(DISPLAY_CARD_WIDTH / 4) * 3}
         priority={priority}
       />
 
